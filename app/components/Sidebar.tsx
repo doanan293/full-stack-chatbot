@@ -12,8 +12,13 @@ interface SidebarProps {
 const Sidebar = ({ expand, setExpand }: SidebarProps) => {
   const { openSignIn } = useClerk();
   const context = useAppContext();
-  const user = context?.user;
-  const [openMenu, setOpenMenu] = useState({ id: 0, open: false });
+  const [openMenu, setOpenMenu] = useState({ id: "", open: false });
+
+  if (!context) {
+    return null; // or loading spinner
+  }
+
+  const { user, chats, createNewChat } = context;
   return (
     <div
       className={`flex flex-col justify-between bg-[#212327] pt-7 transition-all z-50 max-md:absolute max-md:h-screen ${
@@ -58,6 +63,7 @@ const Sidebar = ({ expand, setExpand }: SidebarProps) => {
           </div>
         </div>
         <button
+          onClick={createNewChat}
           className={`mt-8 flex items-center justify-center cursor-pointer ${
             expand
               ? "bg-primary hover:opacity-90 rounded-2xl gap-2 p-2.5 w-max"
@@ -81,7 +87,16 @@ const Sidebar = ({ expand, setExpand }: SidebarProps) => {
           }`}
         >
           <p className="my-1">Recents</p>
-          <ChatLabel openMenu={openMenu} setOpenMenu={setOpenMenu} />
+          {Array.isArray(chats) &&
+            chats.map((chat, index: number) => (
+              <ChatLabel
+                key={index}
+                name={chat.name}
+                id={chat._id}
+                openMenu={openMenu}
+                setOpenMenu={setOpenMenu}
+              />
+            ))}
         </div>
       </div>
       <div>
