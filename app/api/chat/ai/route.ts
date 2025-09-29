@@ -6,7 +6,7 @@ import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 
 const openai = new OpenAI({
-    baseURL: 'https://api.deepseek.com',
+    baseURL: process.env.DEEPSEEK_API_URL,
     apiKey: process.env.DEEPSEEK_API_KEY,
 });
 
@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
         //Call Deepseek API to get the AI response
         const completion = await openai.chat.completions.create({
             messages: [{ role: "system", content: "You are a helpful assistant." }, { role: "user", content: prompt }],
-            model: "deepseek-chat",
+            model: process.env.LLM_MODEL || "Qwen/Qwen3-4B-Instruct-2507-FP8",
             store: true,
         });
         const aiMessage = completion.choices[0].message;
