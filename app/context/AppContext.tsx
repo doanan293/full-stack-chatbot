@@ -51,8 +51,8 @@ export const AppContextProvider = ({
       const { data } = await axios.get("api/chat/get", {
         headers: { Authorization: `Bearer ${token}` },
       });
-      if (data.sucess) {
-        console.log(data.data);
+
+      if (data.success) {
         setChats(data.data);
         // If the users have no chat, create a new chat
         if (data.data.length === 0) {
@@ -92,7 +92,6 @@ export const AppContextProvider = ({
 
           // Set recently updated chat as selected chat
           setSelectedChat(data.data[0]);
-          console.log(data.data[0]);
         }
       } else {
         toast.error(data.message);

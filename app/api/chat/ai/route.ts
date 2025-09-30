@@ -17,6 +17,7 @@ interface MessageWithTimestamp extends OpenAI.Chat.Completions.ChatCompletionMes
 
 export async function POST(req: NextRequest) {
     try {
+
         const { userId } = getAuth(req);
         const { chatId, prompt } = await req.json();
         if (!userId) {

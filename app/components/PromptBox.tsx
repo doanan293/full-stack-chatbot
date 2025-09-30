@@ -57,10 +57,12 @@ const PromptBox = ({ isLoading, setIsLoading }: SidebarProps) => {
           messages: [...prev.messages, userPrompt],
         };
       });
+      console.log("Selected chat:", selectedChat);
       const { data } = await axios.post("/api/chat/ai", {
         chatId: selectedChat._id,
         prompt,
       });
+      console.log("Response from /api/chat/ai:", data);
       if (data.success) {
         setChats((prevChats) =>
           prevChats.map((chat) =>
@@ -94,7 +96,7 @@ const PromptBox = ({ isLoading, setIsLoading }: SidebarProps) => {
               ];
               return { ...prev, messages: updateMessages };
             });
-          });
+          }, i * 100);
         }
       } else {
         toast.error(data.message);

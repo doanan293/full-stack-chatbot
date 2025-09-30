@@ -17,7 +17,6 @@ const Sidebar = ({ expand, setExpand }: SidebarProps) => {
   if (!context) {
     return null; // or loading spinner
   }
-
   const { user, chats, createNewChat } = context;
   return (
     <div
