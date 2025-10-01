@@ -61,16 +61,16 @@ const PromptBox = ({ isLoading, setIsLoading }: SidebarProps) => {
         chatId: selectedChat._id,
         prompt,
       });
-      console.log("data", data);
+
       if (data.success) {
         setChats((prevChats) =>
           prevChats.map((chat) =>
             chat._id === selectedChat._id
-              ? { ...chat, messages: [...chat.messages, data.data] }
+              ? { ...chat, messages: [...chat.messages, data.message] }
               : chat
           )
         );
-        const message = data.data.content;
+        const message = data.message.content;
         const messageTokens = message.split(" ");
         const assistantMessage = {
           role: "assistant",
@@ -84,6 +84,7 @@ const PromptBox = ({ isLoading, setIsLoading }: SidebarProps) => {
             messages: [...prev.messages, assistantMessage],
           };
         });
+
         for (let i = 0; i < messageTokens.length; i++) {
           setTimeout(() => {
             assistantMessage.content = messageTokens.slice(0, i + 1).join(" ");

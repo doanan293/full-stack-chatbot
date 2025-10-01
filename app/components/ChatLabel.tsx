@@ -16,14 +16,13 @@ interface ChatLabelProps {
 
 const ChatLabel = ({ openMenu, setOpenMenu, id, name }: ChatLabelProps) => {
   const context = useAppContext();
-
   if (!context) {
     return null;
   }
 
   const { fetchUserChats, chats, setSelectedChat } = context;
   const selectChat = () => {
-    const chatData = chats.find((chat) => chat._id === openMenu.id);
+    const chatData = chats.find((chat) => chat._id === id);
     if (chatData) {
       setSelectedChat(chatData);
     }
@@ -53,7 +52,7 @@ const ChatLabel = ({ openMenu, setOpenMenu, id, name }: ChatLabelProps) => {
         "Are you sure you want to delete this chat?"
       );
       if (!confirm) return;
-      const { data } = await axios.post("/api/chat/delete", { chatID: id });
+      const { data } = await axios.post("/api/chat/delete", { chatId: id });
       if (data.success) {
         fetchUserChats();
         setOpenMenu({ id: "", open: false });
@@ -73,6 +72,7 @@ const ChatLabel = ({ openMenu, setOpenMenu, id, name }: ChatLabelProps) => {
       <p className="group-hover:max-w-5/6 truncate">{name}</p>
       <div
         onClick={(e) => {
+          console.log("clicked");
           e.stopPropagation();
           setOpenMenu({ id: id, open: !openMenu.open });
         }}
