@@ -10,7 +10,7 @@ import { useAppContext } from "./context/AppContext";
 interface MessageType {
   role: string;
   content: string;
-  timeStamp: number;
+  timestamp: number;
 }
 
 export default function Home() {

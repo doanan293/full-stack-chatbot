@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ success: false, message: "User not authenticated" })
         }
         // Prepare the chat data to be saved in the database
-        const chatData = { userId, message: [], name: "New Chat" }
+        const chatData = { userId, messages: [], name: "New Chat" }
         // Connect to the database
         await connectDB();
         await Chat.create(chatData);

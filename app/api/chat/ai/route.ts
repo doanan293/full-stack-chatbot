@@ -12,7 +12,7 @@ const openai = new OpenAI({
 
 // Define interface for message with timestamp
 interface MessageWithTimestamp extends OpenAI.Chat.Completions.ChatCompletionMessage {
-    timeStamp: number;
+    timestamp: number;
 }
 
 export async function POST(req: NextRequest) {
@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
         await connectDB();
         const data = await Chat.findOne({ _id: chatId, userId });
         //Create a user message object
-        const userPrompt = { role: "user", content: prompt, timeStamp: Date.now() };
+        const userPrompt = { role: "user", content: prompt, timestamp: Date.now() };
         data.messages.push(userPrompt);
         //Call Deepseek API to get the AI response
         const completion = await openai.chat.completions.create({
@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
         const aiMessage = completion.choices[0].message;
         const messageWithTimestamp: MessageWithTimestamp = {
             ...aiMessage,
-            timeStamp: Date.now()
+            timestamp: Date.now()
         };
         data.messages.push(messageWithTimestamp);
         data.save();

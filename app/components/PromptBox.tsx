@@ -39,7 +39,7 @@ const PromptBox = ({ isLoading, setIsLoading }: SidebarProps) => {
       const userPrompt = {
         role: "user",
         content: prompt,
-        timeStamp: Date.now(),
+        timestamp: Date.now(),
       };
       // Saving user prompt in chats array
       setChats((prevChats) =>
@@ -57,12 +57,11 @@ const PromptBox = ({ isLoading, setIsLoading }: SidebarProps) => {
           messages: [...prev.messages, userPrompt],
         };
       });
-      console.log("Selected chat:", selectedChat);
       const { data } = await axios.post("/api/chat/ai", {
         chatId: selectedChat._id,
         prompt,
       });
-      console.log("Response from /api/chat/ai:", data);
+      console.log("data", data);
       if (data.success) {
         setChats((prevChats) =>
           prevChats.map((chat) =>
@@ -76,7 +75,7 @@ const PromptBox = ({ isLoading, setIsLoading }: SidebarProps) => {
         const assistantMessage = {
           role: "assistant",
           content: "",
-          timeStamp: Date.now(),
+          timestamp: Date.now(),
         };
         setSelectedChat((prev) => {
           if (!prev) return prev;

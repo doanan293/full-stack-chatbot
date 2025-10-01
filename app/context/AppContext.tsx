@@ -1,5 +1,6 @@
 "use client";
-import { useAuth, useUser } from "@clerk/nextjs";
+import { useAuth } from "@clerk/nextjs";
+import type { UserResource } from "@clerk/types";
 import axios from "axios";
 import {
   createContext,
@@ -9,6 +10,7 @@ import {
   useCallback,
 } from "react";
 import toast from "react-hot-toast";
+import { useUserSync } from "@/app/hooks/useUserSync";
 
 interface Chat {
   _id: string;
@@ -17,7 +19,7 @@ interface Chat {
   messages: Array<{
     role: string;
     content: string;
-    timeStamp: number;
+    timestamp: number;
   }>;
   userId: string;
   updatedAt: string;
@@ -25,7 +27,7 @@ interface Chat {
 }
 
 type AppContextType = {
-  user: ReturnType<typeof useUser>["user"];
+  user: UserResource | null | undefined;
   chats: Chat[];
   setChats: React.Dispatch<React.SetStateAction<Chat[]>>;
   selectedChat: Chat | null;
@@ -41,7 +43,7 @@ export const AppContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const { user } = useUser();
+  const { user } = useUserSync(); // Now using our custom hook
   const { getToken } = useAuth();
   const [chats, setChats] = useState<Chat[]>([]);
   const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
